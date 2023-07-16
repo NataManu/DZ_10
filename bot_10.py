@@ -20,12 +20,19 @@ def input_error(func):
 @input_error
 def add_command(*args):
     name = Name(args[0])
-    phone = Phone(args[1])
     rec: Record = address_book.get(str(name))
-    if rec:
-        return rec.add_phone(phone)
-    rec = Record(name, phone)
-    return address_book.add_record(rec)
+    if len(args) > 1:
+        phone = Phone(args[1])
+        if rec :
+            return rec.add_phone(phone)
+        rec = Record(name, phone)
+        return address_book.add_record(rec)
+    else:
+        if rec:
+            return f"Contact {name} alredy exists"
+        else:
+            rec = Record(name)
+            return address_book.add_record(rec)
 
 
 @input_error
@@ -36,6 +43,16 @@ def change_command(*args):
     rec: Record = address_book.get(str(name))
     if rec:
         return rec.change_phone(old_phone, new_phone)
+    return f"No contact {name} in address book"
+
+
+@input_error
+def del_command(*args):
+    name = Name(args[0])
+    phone = Phone(args[1])
+    rec: Record = address_book.get(str(name))
+    if rec:
+        return rec.del_phone(phone)
     return f"No contact {name} in address book"
 
 
@@ -67,6 +84,7 @@ def hello_command(*args):
 COMMANDS = {
             add_command: ("add", "+"),
             change_command: ("change", ),
+            del_command: ("delete", "remove"),
             phone_command: ("phone", ),
             hello_command: ("hello", ),
             show_all_command: ("show all", ),

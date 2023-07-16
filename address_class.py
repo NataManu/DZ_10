@@ -39,10 +39,19 @@ class Record:
 
 
     def change_phone(self, old_phone:Phone, new_phone:Phone):
+        if new_phone in self.phones:
+            return f"Phone {new_phone} alredy exists at contact {self.name}"    
         if old_phone in self.phones:
             self.phones[self.phones.index(old_phone)] = new_phone
-            return f"{self.name}: phone {old_phone} change to {new_phone}"
+            return f"{self.name}: phone {old_phone} changed to {new_phone}"
         return f"Phone {old_phone} does not exist at contact {self.name}"
+
+    
+    def del_phone(self, phone:Phone):
+        if phone in self.phones:
+            self.phones.remove(phone)
+            return f"{self.name}: phone {phone} deleted"
+        return f"Phone {phone} does not exist at contact {self.name}"
 
     
     def __str__(self) -> str:
